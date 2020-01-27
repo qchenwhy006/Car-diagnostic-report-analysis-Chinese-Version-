@@ -4,12 +4,18 @@ import jieba
 import pandas as pd
 import re
 from collections import Counter
+import gensim
+from gensim.models.word2vec import LineSentence
+from gensim.models import word2vec
+import logging
+
 
 #输入输出文件信息
 path1='C:\\Users\\qianqian\\Desktop\\AutoMaster_TrainSet.txt'
 path2='C:\\Users\\qianqian\\Desktop\\AutoMaster_TestSet.txt'
 path_user_dict='C:\\Users\\qianqian\\Desktop\\user_dict.txt'
 path_stop_words='C:\\Users\\qianqian\\Desktop\\chineseStopword.txt'
+
 
 
 #读取文件，返回文件的dataframe格式
@@ -93,3 +99,20 @@ if __name__ == "__main__":
     for k, v in vocab_to_int.items():
         file.write(str(k) + ':' + str(v) + '\n')
     file.close()
+
+    logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+
+    data_path = 'C:\\Users\\hawko.DESKTOP-LD1FGF7\\Desktop\\data_merged_train_test_seg_data.txt'
+    model = word2vec.Word2Vec(LineSentence(data_path), workers=4, sg=1, hs=1, min_count=5, size=300)
+    embedding_matrix = {}
+    reverse_vocab = {k: v for k, v in enumerate(model.wv.index2word)}
+    for i in range(len(reverse_vocab)):
+        key = reverse_vocab[i]
+        matrix = model[key]
+        embedding_matrix[key] = matrix
+
+    print(embedding_matrix)
+
+    file = open('C:\\Users\\hawko.DESKTOP-LD1FGF7\\Desktop\\word2vec.txt', 'w')
+    save_model_path = 'C:\\Users\\hawko.DESKTOP-LD1FGF7\\Desktop\\word2vec.txt'
+    model.wv.save_word2vec_format(save_model_path, binary=False)
