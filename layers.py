@@ -47,7 +47,7 @@ class Attention(tf.keras.layers.Layer):
             e = self.V(tf.nn.tanh(self.W1(enc_output) + self.W2(hidden_with_time_axis) + self.Wc(prev_coverage)))
             attn_dist = masked_attention(e)
             tf.keras.layers.RNN
-            coverage=attn_dist+prev_coverage
+            coverage = attn_dist + prev_coverage
         else:
             e = self.V(tf.nn.tanh(self.W1(enc_output) + self.W2(hidden_with_time_axis)))
             attn_dist = masked_attention(e)
@@ -82,5 +82,16 @@ class Decoder(tf.keras.layers.Layer):
         output = tf.reshape(output, (-1, output.shape[2]))
         out = self.fc(output)
         return x, out, state
+
+
+class Pointer(tf.keras.layers.Layer):
+    def _init_(self):
+        self.w_s_reduce = tf.keras.layers.Dense(1)
+        self.w_i_reduce = tf.keras.layers.Dense(1)
+        self.w_c_reduce = tf.keras.layers.Dense(1)
+
+    def call(self, context_vector, state, dec_inp):
+        return tf.nn.sigmoid(self.w_s_reduce(state) + self.w_c_reduce(context_vector) + self.w_i_reduce(dec_inp))
+
 
 
