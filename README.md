@@ -16,3 +16,8 @@ Point-generater Network not only solves OOV problems, also reduces the vocab siz
 
 3) **SIF + Transformer**: 
 Since each piece of data contains the overall experience of a Q&A service (Brand,Model,Question,Dialogue), there are many useless information contributing to long sentences which is unfriendly to LSTM long-term memory, even Transformer. Therefore, build up sentence_embedding matrix based on SIF and create the sentence label due to their similarity with final result. Transformer is selected to train the data formed by sentence as unit. The f1_score for training set would be ***0.89***. Finally, after removing some redundant sentences, the score would be near ***35***, increased by ***9%***.
+
+
+TODO:
+-------------------------------
+1) Because each piece of data contains question (e.g.: How mush does it cost on replacing a new tire? ) or description of car situation, the former could be referenced by Reading Comprehension related models like Bi_DAF, DCN+ or S_Net. Span_extraction based task could accurately focus on the limit length of text, which is more precision than extractive-generating model. 
