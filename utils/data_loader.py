@@ -227,6 +227,25 @@ def train_batch_generator(params):
         steps_per_epoch+=1
     return dataset,steps_per_epoch,dev_x, dev_y
 
+class Vocab:
+    def __init__(self,vocab_max_size=None):
+        self.word2id,self.id2word=load_vocab(vocab_max_size)
+        self.count=len(self.word2id)
+
+    def word_to_id(self,word):
+        if word not in self.word2id:
+            return self.word2id['<UNK>']
+        return self.word2id[word]
+
+    def id_to_word(self,word_id):
+        if word_id not in self.id2word:
+            raise ValueError('Id not found in vocab:%d'% word_id)
+        return self.id2word[word_id]
+
+    def size(self):
+        return self.count
+
+
 
 
 if __name__ == '__main__':
