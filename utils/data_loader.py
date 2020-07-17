@@ -1,10 +1,71 @@
 import pandas as pd
 import numpy as np
 from gensim.models.word2vec import Word2Vec,LineSentence
-from utils.config import train_seg_file,test_seg_file,corpus_data_path,Train_X,Test_X,reversed_vocab_file,vocab_file,\
+from utils.config import extractive_train_file,train_seg_file,test_seg_file,corpus_data_path,Train_X,Test_X,reversed_vocab_file,vocab_file,\
     embedding_matrix_path,test_X_path,train_X_path,train_Y_path,sentence_train_x,sentence_train_y,Train_y,sentence_test_x
 import math
 import tensorflow as tf
+
+
+class CarQuestionAnswer():
+    def __init__(self, max_enc_lens=512, max_dec_lens=512):
+        df_train_x = pd.read_csv(extractive_train_file, sep=',', header=None, encoding='utf-8', names=['texts'])
+        df_train_y= pd.read_csv(Train_y, sep=',', header=None, encoding='utf-8', names=['reports'])
+        df_test_x = pd.read_csv(Test_X, header=None, encoding='utf-8', names=['texts'])
+        self.vocab, reversed_vocab = load_vocab(vocab_max_size=30000)
+
+        self.max_enc_lens = 0
+        self.max_dec_lens = 0
+
+        df_train_x, df_train_y, df_test_x = self._prepare(df_train_x,df_train_y,df_test_x)
+        self.max_enc_lens = min(self.max_enc_lens, max_enc_lens)
+        self.max_dec_lens = min(self.max_dec_lens, max_dec_lens)
+
+        print('self.max_enc_lens', self.max_enc_lens)
+        print('self.max_dec_lens', self.max_dec_lens)
+
+        self.train_x= self._texts_pad(df_train_x)
+        self.test_x = self._texts_pad(df_test_x)
+        self.train_y_real, self.train_y_inp=self._reports_pad(df_train_y)
+
+
+
+
+    def _prepare(self,df_train_x,df_train_y,df_test_x):
+        df_train_x['texts'] = df_train_x['texts'].apply(lambda x:transform_into_index(x,self.vocab) )
+        num = df_train_x['texts'] .apply(lambda x: len(x))
+        train_max_enc_lens= math.ceil(np.mean(num) + 2 * np.std(num))
+
+        df_test_x['texts'] = df_test_x['texts'].apply(lambda x: transform_into_index(x, self.vocab))
+        num = df_train_x['texts'].apply(lambda x: len(x))
+        test_max_enc_lens= math.ceil(np.mean(num) + 2 * np.std(num))
+
+        df_train_y['reports'] = df_train_y['reports'].apply(lambda x: transform_into_index(x,self.vocab))
+        num = df_train_y['reports'].apply(lambda x: len(x))
+        self.max_dec_lens = math.ceil(np.mean(num) + 2 * np.std(num))
+
+        self.max_enc_lens=max(train_max_enc_lens,test_max_enc_lens)
+
+        return df_train_x,df_train_y,df_test_x
+
+
+    def _texts_pad(self,df):
+        x= []
+        for input in df['texts']:
+            input = input[:min(self.max_enc_lens, len(input))]
+            input = input + [self.vocab['<PAD>']] * (self.max_enc_lens - len(input))
+            x.append(input)
+        return np.array(x)
+
+    def _reports_pad(self,df):
+        y_inp, y_real = [], [],
+        for input in df['reports']:
+            input = input[:min(self.max_dec_lens, len(input))]
+            input_real = input + [self.vocab['<END>']] +[self.vocab['<PAD>']] * (self.max_dec_lens - len(input)) # Add '<END>'
+            input_inp=[self.vocab['<START>']]+input+[self.vocab['<END>']] +[self.vocab['<PAD>']]* (self.max_dec_lens - len(input)) # Add '<START>','<END>'
+            y_real.append(input_real)
+            y_inp.append(input_inp[:-1])
+        return np.array(y_real),np.array(y_inp)
 
 
 
