@@ -7,9 +7,9 @@ There are total 3 models applied for this competition: Traditional Seq2Seq + att
 
 My model-updating procedure:
 -----------------------------
-1) Seq2Seq + attention: 
+1) **Seq2Seq + attention**: 
 The highest score (ROUGE_L) for this model would be near 28.5. However, there are still having significant amount of OOV and word-repetition problems. 
-2) PGN + Coverage: 
+2) **PGN + Coverage**: 
 Point-generater Network not only solves OOV problems, also reduces the vocab size and speeds up calculation convergence at the same time. The application of Coverage mechanism could visibly reduce word-repetition. The highest score would be near 32, increased by 14%.
-3) SIF + Transformer: 
+3) **SIF + Transformer**: 
 Since each piece of data contains the overall experience of a Q&A service (Brand,Model,Question,Dialogue), there are many useless information contributing to long sentences which is unfriendly to LSTM long-term memory, even Transformer. 
