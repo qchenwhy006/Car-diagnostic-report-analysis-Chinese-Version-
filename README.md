@@ -1,4 +1,4 @@
-# Car-diagnostic-report-analysis-Chinese-Version-
+# Car-diagnostic-report-analysis(Chinese-Version)
 This is my tensorflow2.0 implementation of the NLG  models applied to [Baidu competition](https://aistudio.baidu.com/aistudio/competition/detail/3): summarizing the car diagnostic reports for a mobile APP. The dataset contains a 110,000 car-related questions or problems provided by app users from real scenes, following by multi-round dialogues between technicians and app users. The main task is to filter the most import information based on conversations in order to build think tank for this mobile APP company. 
 
 The below picture would be my ranking in this competition.
@@ -20,4 +20,4 @@ Since each piece of data contains the overall experience of a Q&A service (Brand
 
 TODO:
 -------------------------------
-1) Because each piece of data contains question (e.g.: How mush does it cost on replacing a new tire? ) or description of car situation, the former could be referenced by Reading Comprehension related models like Bi_DAF, DCN+ or S_Net. Span_extraction based task could accurately focus on the limit length of text, which is more precision than extractive-generating model. 
+1) Because each piece of data contains question (e.g.: How mush does it cost on replacing a new tire? ) or description of car situation, the former could be referenced by Reading Comprehension related models like Bi_DAF, DCN+ or S_Net. Span_extraction based task could accurately focus on the limit length of text, which is more precise than extractive-texting model. 
