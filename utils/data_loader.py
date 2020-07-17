@@ -179,6 +179,13 @@ def load_vocab(vocab_max_size=None):
         reverse_vocab[index]=word
     return vocab,reverse_vocab
 
+def load_stopwords(stopwords_path):
+    file=open(stopwords_path,'r',encoding='utf-8')
+    lines=file.readlines()
+    stopwords=[word.strip() for word in lines]
+    return stopwords
+
+
 
 def load_dataset(max_enc_len=3125,max_dec_len=487):
     train_X=np.load(train_X_path+ '.npy')
