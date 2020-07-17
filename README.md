@@ -10,7 +10,7 @@ My model-updating procedure:
 -----------------------------
 1) **Seq2Seq + attention**: 
 
-The highest score (ROUGE-L) for this model would be near ***28.5***. However, there are still significant amount of OOV and word-repetition problems. 
+The highest score (ROUGE-L) for this model would be near ***28***. However, there are still significant amount of OOV and word-repetition problems. 
 
 2) **PGN + Coverage**: 
 
@@ -18,7 +18,7 @@ Point-generator Network not only could solve OOV problems, but also reduces the 
 
 3) **SIF + Transformer**: 
 
-Since each piece of data contains the overall experience of a Q&A service (Brand, Model, Question, Dialogue), there are many useless information contributing to long sentences which is unfriendly to LSTM long-term memory, even Transformer. Therefore, built up sentence_embedding matrix based on SIF and created the sentence label due to their similarity with final result. Transformer was selected to train the data formed by sentence as unit. The f1_score for training set would be ***0.89***. Finally, after removing some redundant sentences, the score would be near ***35***, increased by ***9%***.
+Since each piece of data contains the overall experience of a Q&A service (Brand, Model, Question, Dialogue), there are many useless information contributing to long sentences which is unfriendly to LSTM long-term memory, even Transformer. Therefore, built up sentence_embedding matrix based on SIF and created the sentence label due to their similarity with final result. Transformer was selected to train the data formed by sentence as unit. The f1_score for training set would be ***0.89***. Finally, after removing some redundant sentences, the score would be near ***35***, increased by ***25%***.
 
 
 TODO:
