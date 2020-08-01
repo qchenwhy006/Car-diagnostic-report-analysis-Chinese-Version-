@@ -2,7 +2,7 @@
 This is my tensorflow2.0 implementation of the NLG-related models applied to [Baidu competition](https://aistudio.baidu.com/aistudio/competition/detail/3): summarizing the car diagnostic reports for a mobile APP. The dataset contains a 110,000 questions or problems provided by app users from real scenes, following by multi-round dialogues between technicians and app users. The main task is to filter the most importance information based on conversations in order to build think tank for this mobile APP company. 
 
 The below picture would be my rank in this competition.
-![Image](https://github.com/qchenwhy006/Car-diagnostic-report-analysis-Chinese-Version-/blob/master/competition_ranking.png)
+![Image](https://github.com/qchenwhy006/Car-diagnostic-report-analysis-Chinese-Version-/blob/master/Competition_ranking.png)
 
 There are total 3 models applied for this competition: Traditional Seq2Seq + attention, PGN + Coverage, SIF + Transformer
 
